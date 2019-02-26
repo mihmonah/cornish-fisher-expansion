@@ -1,11 +1,21 @@
+import argparse
 from math import sqrt
 import numpy as np
 from scipy import stats
 import matplotlib.pyplot as plt
 
-from utils.general import generate_chi_squared_dist
+from src.settings import DistributionError, supported_sitributions
+from utils.general import generate_emp_dist
 from utils.student import calculate_student_approximation
 
+
+parser = argparse.ArgumentParser(description='Process some strings')
+parser.add_argument('--distr', default='chi2', help='Distribution for empirical distribution')
+
+
+emp_distribution = parser.parse_args().distr
+if emp_distribution not in supported_sitributions:
+    raise DistributionError(emp_distribution)
 
 POINTS = 10000
 R = 1  # R (parameter r from formulas)
@@ -21,7 +31,7 @@ x_vec = np.linspace(-10, 10, POINTS)
 # generation of sample size:
 Nn = stats.nbinom.rvs(n=R, p=1 / NN_NUMBER, size=POINTS)
 
-chi_vector = generate_chi_squared_dist(n=POINTS, df=XI, mu=MU, sizes=Nn)
+chi_vector = generate_emp_dist(n=POINTS, df=XI, mu=MU, sizes=Nn)
 TNn_emp = chi_vector * SIGMA * sqrt(R * (NN_NUMBER - 1) + 1)
 TNn_emp.sort(axis=0)
 
@@ -42,7 +52,10 @@ plt.plot(x_vec, student_cdf, label='Pure Student')
 plt.xlabel('x label')
 plt.ylabel('y label')
 
-plt.title(r"Student case: Distribution - $\chi^2(1)$, n = 10, s = 1")
+plt.title(r"Student case: Distribution - {}, n = {}, s = 1".format(
+    supported_sitributions[emp_distribution],
+    NN_NUMBER)
+)
 
 plt.legend()
 plt.show()

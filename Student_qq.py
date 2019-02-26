@@ -5,7 +5,7 @@ import numpy as np
 from scipy import stats
 
 from plotting_utils.qq_plotting import qqprobplot
-from utils.general import generate_chi_squared_dist
+from utils.general import generate_emp_dist
 from utils.student import calculate_student_qq_approximation
 
 
@@ -24,7 +24,7 @@ probabilities = np.linspace(0, 1, POINTS)
 Nn = stats.nbinom.rvs(n=R, p=1 / NN_NUMBER, size=POINTS)
 
 # generation of random value and calculation of statistics' values
-chi_vector = generate_chi_squared_dist(n=POINTS, df=XI, mu=MU, sizes=Nn)
+chi_vector = generate_emp_dist(n=POINTS, df=XI, mu=MU, sizes=Nn)
 TNn_emp = chi_vector * SIGMA * sqrt(R * (NN_NUMBER - 1) + 1)
 TNn_emp.sort(axis=0)
 

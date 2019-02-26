@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from plotting_utils.qq_plotting import qqprobplot
-from utils.general import generate_chi_squared_dist
+from utils.general import generate_emp_dist
 from utils.laplace import calculate_laplace_qq_approximation, generate_max_discrete_pareto_dist
 
 POINTS = 1000  # number of points for plotting
@@ -20,7 +20,7 @@ probabilities = np.linspace(0, 1, POINTS)
 
 
 array_of_vals = generate_max_discrete_pareto_dist(shape=sn, rv_num=NN_NUMBER, n=POINTS)
-chivec = generate_chi_squared_dist(n=POINTS, df=XI, mu=MU, sizes=array_of_vals) * SIGMA\
+chivec = generate_emp_dist(n=POINTS, df=XI, mu=MU, sizes=array_of_vals) * SIGMA \
          * sqrt(NN_NUMBER)
 
 q_emp = sorted(chivec)
