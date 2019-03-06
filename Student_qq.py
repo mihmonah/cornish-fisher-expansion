@@ -1,3 +1,4 @@
+import argparse
 from math import sqrt
 
 import matplotlib.pyplot as plt
@@ -5,26 +6,35 @@ import numpy as np
 from scipy import stats
 
 from plotting_utils.qq_plotting import qqprobplot
-from utils.general import generate_emp_dist
+from src.settings import DistributionError, supported_distributions
+from utils.general import generate_emp_dist, obtain_moments
 from utils.student import calculate_student_qq_approximation
 
 
-POINTS = 10000
+parser = argparse.ArgumentParser(description='Process some strings')
+parser.add_argument('--distr', default='chi2', help='Empirical distribution')
+parser.add_argument('--df', default=1, help='Shape parameter for empirical distribution')
+parser.add_argument('--N', default=10, help='Number of observations')
+parser.add_argument('--points', default=10000, help='Number of points for plotting')
+
+emp_distribution = parser.parse_args().distr
+emp_df = parser.parse_args().df
+NN_NUMBER = parser.parse_args().N
+POINTS = parser.parse_args().points
+
+if emp_distribution not in supported_distributions:
+    raise DistributionError(emp_distribution)
+
 R = 2  # R (parameter r from formulas)
-NN_NUMBER = 10  # OBSERVATIONS (number of observations)
-# var
-XI = 1
-MU = 1
-SIGMA = (2 * XI) ** (- 1 / 2)
-MU3 = sqrt(8 / XI)
-MU4 = 12 / XI
+x_vec = np.linspace(-10, 10, POINTS)
+MU, SIGMA, MU3, MU4 = obtain_moments(emp_distribution, emp_df)
 probabilities = np.linspace(0, 1, POINTS)
 
 # generation of sample size:
 Nn = stats.nbinom.rvs(n=R, p=1 / NN_NUMBER, size=POINTS)
 
 # generation of random value and calculation of statistics' values
-chi_vector = generate_emp_dist(n=POINTS, df=XI, mu=MU, sizes=Nn)
+chi_vector = generate_emp_dist(n=POINTS, df=emp_df, mu=MU, sizes=Nn)
 TNn_emp = chi_vector * SIGMA * sqrt(R * (NN_NUMBER - 1) + 1)
 TNn_emp.sort(axis=0)
 

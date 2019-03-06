@@ -1,7 +1,7 @@
-supported_sitributions = {
+supported_distributions = {
     'chi2': '$\chi^2$',
-    'gamma': '$\Gamma$',
-    'norm': '$\mathcal{N}$'}
+    'norm': '$\mathbb{N}$'
+}
 
 
 class DistributionError(Exception):

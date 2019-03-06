@@ -60,7 +60,10 @@ def qqprobplot(x, y, fit=True, plot=None, rvalue=False):
         slope, intercept, r, prob, sterrest = stats.linregress(osm, osr)
 
     if plot is not None:
-        plot.plot(osm, osr, 'bo')
+        plot.plot(osm, osr, 'bo', markersize=2)
+        plot.plot(np.arange(-10, 10), np.arange(-10, 10), linewidth=0.5, color='black')
+        plot.axhline(linewidth=0.5, color='black')
+        plot.axvline(linewidth=0.5, color='black')
         _add_axis_labels_title(plot, xlabel='Theoretical quantiles',
                                ylabel='Approximate quantiles',
                                title='Probability Plot')
