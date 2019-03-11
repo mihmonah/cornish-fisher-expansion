@@ -7,11 +7,15 @@ def generate_emp_dist(n: int, df: float, mu: float, sizes: np.array = None,
                       distr='chi2'):
     """
         Function for generating array of means of random variates with empirical distribution,
-        :param n:
-        :param mu:
-        :param sizes:
+        shifted by `mu`
+        Current version supports only Chi-squared distribution
+
+        :param n: size of returning vector
+        :param mu: shifting parameter
+        :param sizes: array of sizes for each mean
         :param df: a shape parameter (if it exists)
-        :param distr:
+        :param distr: empirical distribution, only Chi-squared is supported
+        :returns vector: vector of means of random variates with empirical distribution
     """
     distribution = getattr(stats, distr)
     vector = np.zeros(n, dtype=float)
@@ -21,6 +25,14 @@ def generate_emp_dist(n: int, df: float, mu: float, sizes: np.array = None,
 
 
 def obtain_moments(distr: str, df: float = 0):
+    """
+        Function for obtaining first 4 moments of random variable
+        Current version supports only Chi-squared distribution
+
+        :param distr: distribution, only Chi-squared is supported
+        :param df: a shape parameter
+        :return (mu, sigma, mu3, mu4): tuple with first 4 moments
+    """
     if distr == 'chi2':
         mu = df
         sigma = (2 * df) ** (- 1 / 2)

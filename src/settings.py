@@ -1,6 +1,5 @@
 supported_distributions = {
-    'chi2': '$\chi^2$',
-    'norm': '$\mathbb{N}$'
+    'chi2': '$\chi^2$'
 }
 
 
