@@ -4,6 +4,9 @@ supported_distributions = {
 
 
 class DistributionError(Exception):
+    """
+        Error for unsupported distribution input
+    """
     def __init__(self, code):
         self.code = code
 

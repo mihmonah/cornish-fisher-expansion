@@ -6,14 +6,15 @@ from scipy import stats
 def calculate_student_approximation(xv, r: float = 1, order: int = 2, nn: int = 10,
                                     mu3: float = 1, mu4: float = 1):
     """
+        Function for calculating Chebyshev-Edgeworth approximation for Student case
 
-    :param xv: points for approximation
-    :param r: parameter of Student distribution
-    :param nn: index of Nn
-    :param order: order of approximation (first or second)
-    :param mu3: skewness of X
-    :param mu4: kurtosis of X
-    :returns: vector of Student approximation, or cdf, if order is 0
+        :param xv: points for approximation
+        :param r: parameter of Student distribution
+        :param nn: index of Nn
+        :param order: order of approximation (first or second)
+        :param mu3: skewness of X
+        :param mu4: kurtosis of X
+        :returns: vector of Student approximation, or cdf, if order is 0
     """
     cdf = stats.t.cdf(x=xv, df=2 * r)
     if order == 0:
@@ -38,13 +39,14 @@ def calculate_student_approximation(xv, r: float = 1, order: int = 2, nn: int = 
 def calculate_student_qq_approximation(probs, r: float = 1, nn: int = 10,
                                        mu3: float = 1, mu4: float = 1):
     """
+        Function for calculating Cornish-Fisher approximation for Student case
 
-    :param probs: vector of probabilities
-    :param r: parameter of Student distribution
-    :param nn: index of Nn
-    :param mu3: skewness of X
-    :param mu4: kurtosis of X
-    :returns: vector of Student quantiles approximation
+        :param probs: vector of probabilities
+        :param r: parameter of Student distribution
+        :param nn: index of Nn
+        :param mu3: skewness of X
+        :param mu4: kurtosis of X
+        :returns: vector of Student quantiles approximation
     """
     q_s = stats.t.ppf(q=probs, df=2 * r)
     gn = r * (nn - 1) + 1
